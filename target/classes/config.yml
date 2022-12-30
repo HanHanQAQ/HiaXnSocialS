@@ -1,0 +1,11 @@
+#插件必须使用MySql 与Redis
+MySql:
+  ip: localhost
+  port: 3306
+  user: root
+  password: iloveyusanr520@
+  database: hiaxnsocial
+Redis:
+  ip: 127.0.0.1
+  port: 6379
+a:

@@ -1,0 +1,12 @@
+name: HiaXnSocial
+version: '1.0-SNAPSHOT'
+main: team.hiaxn.hanhan.hiaxnsocial.HiaXnSocial
+authors: [ HanHan ]
+description: 类似Hypixel组队&好友系统的插件
+commands:
+  friend:
+  f:
+  friendgui:
+  addfriend:
+  partygui:
+  testsocket:
