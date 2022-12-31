@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import team.hiaxn.hanhan.hiaxnsocial.Friend.Gui.FriendGui;
+import team.hiaxn.hanhan.hiaxnsocial.HiaXnSocial;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -67,7 +68,7 @@ public class friendgui implements CommandExecutor {
                 }
                 //
             }
-        }.run();
+        }.runTask(HiaXnSocial.getPlugin(HiaXnSocial.class));
 
 
 

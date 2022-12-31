@@ -18,7 +18,6 @@ public final class RedisUtil {
     private RedisUtil(){
 
     }
-
     public static synchronized Jedis getJedis(){
         if(jedisPool==null){
             JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();

@@ -14,11 +14,11 @@ import team.hiaxn.hanhan.hiaxnsocial.Socket.SocketNotification;
 
 import java.util.Arrays;
 
-public class AddFriendListener implements Listener {
+public class removeFriendListener implements Listener {
     @EventHandler
     public void onClickAdd(InventoryClickEvent event) {
         if (event.getView().getTitle().equals("§0好友")) {
-            if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§a添加好友")) {
+            if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§c删除好友")) {
                 ItemStack left = new ItemStack(Material.PAPER);
                 ItemMeta leftMeta = left.getItemMeta();
                 leftMeta.setDisplayName("输入用户名");
@@ -26,7 +26,7 @@ public class AddFriendListener implements Listener {
                 new AnvilGUI.Builder()
                         .onComplete((completion) -> {
                             Player player = (Player) event.getWhoClicked();
-                            player.chat("/friend add " + completion.getText());
+                            player.chat("/friend remove " + completion.getText());
                             return Arrays.asList(AnvilGUI.ResponseAction.close());
                         })
                         .itemLeft(left)

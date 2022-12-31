@@ -20,11 +20,12 @@ public class PlayerQuitListener implements Listener {
         selectPs.setString(1, String.valueOf(player.getUniqueId()));
         ResultSet select1Rs = selectPs.executeQuery();
         if (!select1Rs.next()) {
-            String insert1 = "INSERT INTO player_data (uuid,name,friends)VALUES (?,?,?)"; //不存在 进行插入
+            String insert1 = "INSERT INTO player_data (uuid,name,friends,friendRequests)VALUES (?,?,?,)"; //不存在 进行插入
             PreparedStatement inset1Ps = connection.prepareStatement(insert1);
             inset1Ps.setString(1,String.valueOf(player.getUniqueId()));
             inset1Ps.setString(2,player.getName());
             inset1Ps.setString(3,"friends:null");
+            inset1Ps.setString(4,"null");
             inset1Ps.executeUpdate();
         }
         String insert2 = "UPDATE player_data SET status = ? WHERE uuid = ?";

@@ -36,6 +36,21 @@ public class FriendGui implements Listener {
     public FriendGui(Player targetPlayer) {
         this.ownPlayer = targetPlayer;
         this.friendGui = new InventoryUtil("§0好友",6 * 9);
+
+        ItemStack addFriend = new ItemStack(Material.BOOK_AND_QUILL);
+        ItemMeta addFItemMeta = addFriend.getItemMeta();
+        addFItemMeta.setDisplayName("§a添加好友");
+        addFItemMeta.setLore(Arrays.asList("§7点击以添加一个好友到好友列表中。","§7好友除了可以互相查看对方在服务器上干什么,还可以互相查看对方是否在线。"));
+        addFriend.setItemMeta(addFItemMeta);
+        friendGui.setItem(18,addFriend);
+
+        ItemStack remFriend = new ItemStack(Material.BARRIER);
+        ItemMeta remFItemMeta = addFriend.getItemMeta();
+        remFItemMeta.setDisplayName("§c删除好友");
+        remFItemMeta.setLore(Arrays.asList("§7点击此处从你当前的好友列表中删除好友。"));
+        remFriend.setItemMeta(remFItemMeta);
+        friendGui.setItem(19,remFriend);
+
         ItemStack glass = new ItemStack(Material.STAINED_GLASS_PANE,1,(short) 2);
         ItemMeta glassItemMeta = glass.getItemMeta();
         glassItemMeta.setDisplayName(" ");
