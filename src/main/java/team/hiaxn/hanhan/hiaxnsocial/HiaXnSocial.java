@@ -1,23 +1,25 @@
 package team.hiaxn.hanhan.hiaxnsocial;
 
+import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPubSub;
-import team.hiaxn.hanhan.hiaxnsocial.Friend.Command.addfriend;
-import team.hiaxn.hanhan.hiaxnsocial.Friend.Command.friend;
-import team.hiaxn.hanhan.hiaxnsocial.Friend.Command.friendgui;
-import team.hiaxn.hanhan.hiaxnsocial.Friend.Command.testsocket;
-import team.hiaxn.hanhan.hiaxnsocial.Friend.Gui.ButtionListener.AddFriendListener;
-import team.hiaxn.hanhan.hiaxnsocial.Friend.Gui.ButtionListener.removeFriendListener;
-import team.hiaxn.hanhan.hiaxnsocial.Friend.Gui.FriendGui;
-import team.hiaxn.hanhan.hiaxnsocial.Friend.Gui.ButtionListener.CanNotMoveListener;
-import team.hiaxn.hanhan.hiaxnsocial.Friend.PlayerEventListener.PlayerJoinListener;
-import team.hiaxn.hanhan.hiaxnsocial.Friend.PlayerEventListener.PlayerQuitListener;
-import team.hiaxn.hanhan.hiaxnsocial.MySql.MySqlManager;
-import team.hiaxn.hanhan.hiaxnsocial.Redis.RedisUtil;
+import team.hiaxn.hanhan.hiaxnsocial.friend.command.addfriend;
+import team.hiaxn.hanhan.hiaxnsocial.friend.command.friend;
+import team.hiaxn.hanhan.hiaxnsocial.friend.command.friendgui;
+import team.hiaxn.hanhan.hiaxnsocial.friend.command.testsocket;
+import team.hiaxn.hanhan.hiaxnsocial.friend.gui.buttionlistener.AddFriendListener;
+import team.hiaxn.hanhan.hiaxnsocial.friend.gui.buttionlistener.removeFriendListener;
+import team.hiaxn.hanhan.hiaxnsocial.friend.gui.FriendGui;
+import team.hiaxn.hanhan.hiaxnsocial.friend.gui.buttionlistener.CanNotMoveListener;
+import team.hiaxn.hanhan.hiaxnsocial.friend.listener.PlayerJoinListener;
+import team.hiaxn.hanhan.hiaxnsocial.friend.listener.PlayerQuitListener;
+import team.hiaxn.hanhan.hiaxnsocial.mySql.MySqlManager;
+import team.hiaxn.hanhan.hiaxnsocial.redis.RedisUtil;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -40,20 +42,37 @@ import java.util.concurrent.TimeUnit;
  *  　　▀██▅▇▀
  */
 public final class HiaXnSocial extends JavaPlugin {
+    public static RegisteredServiceProvider<LuckPerms> provider;
+    public static LuckPerms lpapi;
     public static String serverName = "HiaXn";
     public static String serverAddress = "www.hiaxn.cn";
     public static JedisPubSub jedisPubSub;
     public static Connection connection;
     public static HiaXnSocial instance;
     public static HiaXnSocial getInstace() {
-        return HiaXnSocial.instance;
+        return instance;
     }
     @Override
     public void onEnable() {
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+        } else {
+            getLogger().warning("Could not find PlaceholderAPI! This plugin is required.");
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
+                if (provider != null) {
+                    lpapi = provider.getProvider();
+
+                }
+            }
+        }.runTaskLater(this,20L*3);
         //数据库操作开始
         RedisConnect();
         connection = MySqlManager.getNewConnection(); //赋值connection
-        MySqlManager.createTable("player_data","uuid varchar(255),name varchar(255),friends TEXT(65536),partys TEXT(65536),status varchar(255),friendRequests TEXT(65536)");
+        MySqlManager.createTable("player_data","uuid varchar(255),name varchar(255),friends TEXT(65536),partys TEXT(65536),status varchar(255)");
         MySqlManager.keepConnect();
         //数据库操作结束
 
@@ -92,7 +111,7 @@ public final class HiaXnSocial extends JavaPlugin {
         jedisPubSub = new JedisPubSub() {
             @Override
             public void onMessage(String channel, String message) {
-                Bukkit.broadcastMessage("消息来自频道"+"---"+channel + ": " + message);
+               // Bukkit.broadcastMessage("消息来自频道"+"---"+channel + ": " + message);
             }
             @Override
             public void onSubscribe(String channel, int subscribedChannels) {
